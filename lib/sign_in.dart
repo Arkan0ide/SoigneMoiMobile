@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:soigne_moi_mobile/home_screen.dart';
 import 'package:soigne_moi_mobile/service/api.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -27,16 +26,13 @@ class _SignInState extends State<SignIn> {
     var body = json.decode(res.body);
 
     if (body['code'] == 401) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text('Invalid Credentials')));
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Identifiants incorrects')));
     }
 
     if (body['token'] != null) {
       SharedPreferences localStorage = await SharedPreferences.getInstance();
       localStorage.setString('token', body['token']);
-
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => HomeScreen()));
     }
   }
 
@@ -44,7 +40,7 @@ class _SignInState extends State<SignIn> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Flutter-Symfony Rest API'),
+        title: const Text('SoigneMoi - Connexion'),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24),
