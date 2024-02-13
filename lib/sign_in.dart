@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:soigne_moi_mobile/home_screen.dart';
 import 'package:soigne_moi_mobile/service/api.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -33,6 +34,9 @@ class _SignInState extends State<SignIn> {
     if (body['token'] != null) {
       SharedPreferences localStorage = await SharedPreferences.getInstance();
       localStorage.setString('token', body['token']);
+
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => HomeScreen()));
     }
   }
 

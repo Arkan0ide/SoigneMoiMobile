@@ -1,3 +1,4 @@
+import 'package:soigne_moi_mobile/home_screen.dart';
 import 'package:soigne_moi_mobile/sign_in.dart';
 import 'package:flutter/material.dart';
 
@@ -32,7 +33,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      routes: {SignIn.route: (context) => const SignIn()},
+      routes: {
+        SignIn.route: (context) => const SignIn(),
+        HomeScreen.route: (context) => const HomeScreen()
+      },
       initialRoute: SignIn.route,
     );
   }
