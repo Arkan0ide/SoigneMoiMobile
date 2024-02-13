@@ -29,7 +29,7 @@ class Api {
     String? token = localStorage.getString('token');
 
     if (token == null) {
-      throw Exception('Erreur d'authentification, token manquant');
+      throw Exception('Erreur d\'authentification, token manquant');
     }
     try {
       final url = Uri.parse('http://127.0.0.1:8080/api/patients');
