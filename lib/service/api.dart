@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/material.dart';
 
 class Api {
   token() async {
@@ -10,7 +11,7 @@ class Api {
     return '?token=$token';
   }
 
-  login(data) async {
+  login(data, context) async {
     var fullUrl = 'http://127.0.0.1:8080/api/login' + await token();
 
     Response response = await http.post(
@@ -21,7 +22,58 @@ class Api {
       },
     );
 
+    try {
+      if (response.statusCode == 200) {
+        var jsonResponse = jsonDecode(response.body);
+        var jwtToken = jsonResponse['token'];
+        var decodedToken = _decodeJwt(jwtToken);
+        print(decodedToken);
+        if (!decodedToken['roles'].contains('ROLE_DOCTOR')) {
+          throw Exception(
+              'Vous n\'êtes pas autorisé à accéder à cette application');
+        }
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(e.toString())),
+      );
+      return Response(jsonEncode({'error': 'Unauthorized'}), 401);
+    }
+
     return response;
+  }
+
+  Map<String, dynamic> _decodeJwt(String token) {
+    final parts = token.split('.');
+    if (parts.length != 3) {
+      throw Exception('Invalid token');
+    }
+
+    final payload = _urlBase64Decode(parts[1]);
+    final payloadMap = jsonDecode(payload);
+    if (payloadMap is! Map<String, dynamic>) {
+      throw Exception('Invalid payload');
+    }
+
+    return payloadMap;
+  }
+
+  String _urlBase64Decode(String encoded) {
+    String output = encoded.replaceAll('-', '+').replaceAll('_', '/');
+    switch (output.length % 4) {
+      case 0:
+        break;
+      case 2:
+        output += '==';
+        break;
+      case 3:
+        output += '=';
+        break;
+      default:
+        throw Exception('Illegal base64url string!"');
+    }
+
+    return utf8.decode(base64Url.decode(output));
   }
 
   Future<List<Map<String, dynamic>>> getSchedule() async {
@@ -104,7 +156,7 @@ class Api {
       }
     } catch (error) {
       // Handle unexpected errors (e.g., network issues)
-      throw Exception('Error fetching schedule: $error');
+      throw Exception('Error fetching drugs: $error');
     }
   }
 
