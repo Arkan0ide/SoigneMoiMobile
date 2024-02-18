@@ -54,7 +54,10 @@ class _PrescriptionOpinionState extends State<PrescriptionOpinion> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Formulaire'),
+        leading: Image.asset('logo-n.png'),
+        title: Text('Saisie de la prescription'),
+        backgroundColor: Color(0xFF007BFF),
+        centerTitle: true,
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -214,7 +217,17 @@ class _PrescriptionOpinionState extends State<PrescriptionOpinion> {
                             _posologieController.clear();
                           });
                         },
-                        child: Text('Ajouter ce médicament'),
+                        style: ButtonStyle(
+                          // Add this block
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                              Color(0xFF007BFF)),
+                        ),
+                        child: const Text(
+                          'Ajouter ce médicament',
+                          style: TextStyle(
+                            color: Colors.white, // Add this line
+                          ),
+                        ),
                       ),
 
                       SizedBox(height: 20),
@@ -282,7 +295,17 @@ class _PrescriptionOpinionState extends State<PrescriptionOpinion> {
                     ));
                   }
                 },
-                child: Text('Envoyer'),
+                style: ButtonStyle(
+                  // Add this block
+                  backgroundColor:
+                      MaterialStateProperty.all<Color>(Color(0xFF007BFF)),
+                ),
+                child: const Text(
+                  'Envoyer',
+                  style: TextStyle(
+                    color: Colors.white, // Add this line
+                  ),
+                ),
               ),
             ],
           ),

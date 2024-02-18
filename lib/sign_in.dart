@@ -46,7 +46,10 @@ class _SignInState extends State<SignIn> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('SoigneMoi - Connexion'),
+        leading: Image.asset('logo-n.png'),
+        title: const Text('Connexion'),
+        backgroundColor: Color(0xFF007BFF),
+        centerTitle: true,
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -102,9 +105,16 @@ class _SignInState extends State<SignIn> {
                       login();
                     }
                   },
+                  style: ButtonStyle(
+                    // Add this block
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(Color(0xFF007BFF)),
+                  ),
                   child: const Text(
-                    'Sign In',
-                    style: TextStyle(fontSize: 16),
+                    'Connexion',
+                    style: TextStyle(
+                      color: Colors.white, // Add this line
+                    ),
                   ),
                 ),
               ),

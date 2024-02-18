@@ -34,8 +34,10 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('SoigneMoi App'),
-      ),
+          leading: Image.asset('logo-n.png'),
+          title: Text('Accueil'),
+          backgroundColor: Color(0xFF007BFF),
+          centerTitle: true),
       body: SafeArea(
         child: Center(
           child: Column(
