@@ -27,8 +27,8 @@ class _SignInState extends State<SignIn> {
     var body = json.decode(res.body);
 
     if (body['code'] == 401) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text('Invalid Credentials')));
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Identifiants incorrects')));
     }
 
     if (body['token'] != null) {
@@ -44,7 +44,7 @@ class _SignInState extends State<SignIn> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Flutter-Symfony Rest API'),
+        title: const Text('SoigneMoi - Connexion'),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24),

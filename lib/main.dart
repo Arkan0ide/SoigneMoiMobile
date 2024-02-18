@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Blog app Symfony Backend ',
+      title: 'SoigneMoi Mobile',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
