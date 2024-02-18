@@ -1,5 +1,6 @@
 import 'package:soigne_moi_mobile/home_screen.dart';
 import 'package:soigne_moi_mobile/sign_in.dart';
+import 'package:soigne_moi_mobile/prescription_opinion.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -29,13 +30,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Blog app Symfony Backend ',
+      title: 'SoigneMoi Mobile',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
       routes: {
         SignIn.route: (context) => const SignIn(),
-        HomeScreen.route: (context) => const HomeScreen()
+        HomeScreen.route: (context) => const HomeScreen(),
+        PrescriptionOpinion.route: (context) => const PrescriptionOpinion()
       },
       initialRoute: SignIn.route,
     );

@@ -3,6 +3,7 @@ import 'package:soigne_moi_mobile/home_screen.dart';
 import 'package:soigne_moi_mobile/service/api.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:email_validator/email_validator.dart'; // Add this line
 
 class SignIn extends StatefulWidget {
   const SignIn({Key? key}) : super(key: key);
@@ -14,6 +15,7 @@ class SignIn extends StatefulWidget {
 }
 
 class _SignInState extends State<SignIn> {
+  final _formKey = GlobalKey<FormState>(); // Add this line
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
@@ -23,12 +25,12 @@ class _SignInState extends State<SignIn> {
       'password': passwordController.text,
     };
 
-    var res = await Api().login(data);
+    var res = await Api().login(data, context);
     var body = json.decode(res.body);
 
     if (body['code'] == 401) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text('Invalid Credentials')));
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Identifiants incorrects')));
     }
 
     if (body['token'] != null) {
@@ -44,46 +46,81 @@ class _SignInState extends State<SignIn> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Flutter-Symfony Rest API'),
+        leading: Image.asset('logo-n.png'),
+        title: const Text('Connexion'),
+        backgroundColor: Color(0xFF007BFF),
+        centerTitle: true,
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            TextField(
-              controller: emailController,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: 'E-mail',
-                labelStyle: TextStyle(fontSize: 18),
-              ),
-            ),
-            const SizedBox(height: 24),
-            TextField(
-              controller: passwordController,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: 'Password',
-                labelStyle: TextStyle(fontSize: 18),
-              ),
-            ),
-            const SizedBox(height: 24),
-            Align(
-              alignment: Alignment.center,
-              child: ElevatedButton(
-                onPressed: () {
-                  login();
+        child: Form(
+          // Change this line
+          key: _formKey, // Add this line
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              TextFormField(
+                // Change this line
+                controller: emailController,
+                validator: (value) {
+                  // Add this block
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your email';
+                  } else if (!EmailValidator.validate(value)) {
+                    return 'Please enter a valid email';
+                  }
+                  return null;
                 },
-                child: const Text(
-                  'Sign In',
-                  style: TextStyle(fontSize: 16),
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: 'E-mail',
+                  labelStyle: TextStyle(fontSize: 18),
                 ),
               ),
-            ),
-            const SizedBox(height: 16),
-          ],
+              const SizedBox(height: 24),
+              TextFormField(
+                // Change this line
+                controller: passwordController,
+                obscureText: true,
+                validator: (value) {
+                  // Add this block
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your password';
+                  }
+                  return null;
+                },
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: 'Password',
+                  labelStyle: TextStyle(fontSize: 18),
+                ),
+              ),
+              const SizedBox(height: 24),
+              Align(
+                alignment: Alignment.center,
+                child: ElevatedButton(
+                  onPressed: () {
+                    if (_formKey.currentState?.validate() ?? false) {
+                      login();
+                    }
+                  },
+                  style: ButtonStyle(
+                    // Add this block
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(Color(0xFF007BFF)),
+                  ),
+                  child: const Text(
+                    'Connexion',
+                    style: TextStyle(
+                      color: Colors.white, // Add this line
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+            ],
+          ),
         ),
       ),
     );
